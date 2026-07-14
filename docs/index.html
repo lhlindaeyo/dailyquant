@@ -12,17 +12,22 @@
   <div class="app">
     <!-- 좌측 사이드바 -->
     <aside class="sidebar">
-      <div class="logo">$</div>
+      <div class="logo">DQ</div>
       <nav>
-        <button class="nav-btn active" data-tab="home"     title="홈 · 대표지수/캘린더">⌂</button>
-        <button class="nav-btn"        data-tab="industry" title="산업분석">⌕</button>
-        <button class="nav-btn"        data-tab="backtest" title="백테스팅">▤</button>
-        <button class="nav-btn"        data-tab="target"   title="목표주가 계산">◈</button>
+        <button class="nav-btn active" data-tab="home"     title="홈 · 대표지수/캘린더"><span class="nav-ico">⌂</span><span class="nav-label">Markets</span></button>
+        <button class="nav-btn"        data-tab="industry" title="산업분석"><span class="nav-ico">⌕</span><span class="nav-label">Research</span></button>
+        <button class="nav-btn"        data-tab="backtest" title="백테스팅"><span class="nav-ico">▤</span><span class="nav-label">Backtest</span></button>
+        <button class="nav-btn"        data-tab="target"   title="목표주가 계산"><span class="nav-ico">◈</span><span class="nav-label">Target</span></button>
       </nav>
     </aside>
 
     <!-- 메인 -->
     <main class="content">
+      <!-- 상단 브랜드 헤더 -->
+      <header class="topbar">
+        <div class="wordmark">DAILY&nbsp;<span>QUANT</span></div>
+        <div class="topbar-meta">Personal Quant Research Terminal</div>
+      </header>
       <!-- 홈 -->
       <section id="tab-home" class="tab active">
         <h1>Market Dashboard</h1>
