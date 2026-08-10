@@ -1,9 +1,8 @@
 # 📊 Daily Quant
 
-개인 퀀트 리서치 플랫폼. **정적 프론트(GitHub Pages) + 데이터 파이프라인(GitHub Actions) + 계산 앱(Streamlit)** 3층 구조로 동작합니다.
+개인 퀀트 리서치 플랫폼. **정적 프론트(GitHub Pages) + 계산 앱(Streamlit)** 2층 구조로 동작합니다.
 
-- **프론트(`docs/`)** — 4개 탭 대시보드. GitHub Pages로 배포되는 순수 HTML/CSS/JS.
-- **파이프라인(`pipeline/` + Actions)** — 매일 매크로 지표를 수집해 `docs/data/macro.json` 생성.
+- **프론트(`docs/`)** — 4개 탭 대시보드. GitHub Pages로 배포되는 순수 HTML/CSS/JS. 각 탭은 키워드 선택 + 마크다운 글로 구성.
 - **계산 앱(`streamlit_app/`)** — 백테스팅·목표주가 계산. Streamlit Community Cloud에 배포 후 프론트에서 링크로 연결.
 
 ---
@@ -24,10 +23,6 @@ dailyqaunt/
 │       ├── industries/*.md      # 산업분석 글 (직접 작성)
 │       └── backtests/*.md       # 팩터별 백테스트 결과 글 (직접 작성)
 │
-├── pipeline/                     # (현재 미사용) 홈탭 개편으로 지표 수집은 연결 해제됨
-│   ├── fetch_macro.py           # yfinance(+FRED GDP) → docs/data/macro.json
-│   └── requirements.txt
-│
 ├── streamlit_app/               # Streamlit Cloud 배포 (main file: Home.py)
 │   ├── Home.py
 │   ├── pages/
@@ -36,10 +31,7 @@ dailyqaunt/
 │   │   └── 3_Target_Price.py    # ?method=per|dcf|rim 쿼리 분기
 │   └── requirements.txt
 │
-├── research/                     # 로컬 전용 리서치/백테스트 엔진 (추후 streamlit_app과 연결 예정)
-│
-├── .env.example                  # FRED_API_KEY 등 로컬 환경변수 템플릿
-└── .github/workflows/update-data.yml   # 매일 06:00 KST + 수동 실행
+└── research/                     # 로컬 전용 리서치/백테스트 엔진 (추후 streamlit_app과 연결 예정)
 ```
 
 ## 🧩 탭별 동작
@@ -58,8 +50,6 @@ dailyqaunt/
 **2. Streamlit 배포** — [share.streamlit.io](https://share.streamlit.io) 에서 이 repo 연결, Main file path `streamlit_app/Home.py`. 배포 URL을 `docs/data/config.json` 의 `targetMethods[].url`·`backtest.newBacktestUrl` 에 입력.
 
 **3. 글 추가** — `docs/content/keywords/`(홈) · `industries/`(산업분석) · `backtests/`(백테스트 결과)에 `.md` 작성 → `config.json` 의 해당 목록(`homeKeywords`/`industries`/`backtest.factors`)에 항목 추가 → 커밋.
-
-> 매크로 지표 파이프라인(`pipeline/`, `.github/workflows/update-data.yml`, `FRED_API_KEY`)은 홈탭 개편으로 **현재 미사용** 상태입니다. 지표 기능을 되살리지 않을 거라면 이 파일들을 삭제해도 됩니다.
 
 ## 🧪 로컬 테스트
 
