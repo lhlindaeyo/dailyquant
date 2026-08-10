@@ -18,13 +18,13 @@ dailyqaunt/
 │   │   ├── css/style.css        # 스크롤 스냅(가로) + 세로 스크롤
 │   │   └── js/                  # app(라우팅) / home / industry / backtest / target
 │   ├── data/
-│   │   ├── macro.json           # 9개 지표(GDP 포함) × 7일 (Actions가 생성)
-│   │   └── config.json          # 산업목록·계산법·Streamlit URL·백테스팅 팩터목록
+│   │   └── config.json          # 홈키워드·산업목록·계산법·Streamlit URL·백테스팅 팩터목록
 │   └── content/
+│       ├── keywords/*.md        # 홈탭 키워드별 글 (직접 작성)
 │       ├── industries/*.md      # 산업분석 글 (직접 작성)
 │       └── backtests/*.md       # 팩터별 백테스트 결과 글 (직접 작성)
 │
-├── pipeline/
+├── pipeline/                     # (현재 미사용) 홈탭 개편으로 지표 수집은 연결 해제됨
 │   ├── fetch_macro.py           # yfinance(+FRED GDP) → docs/data/macro.json
 │   └── requirements.txt
 │
@@ -46,7 +46,7 @@ dailyqaunt/
 
 | 탭 | 아이콘 | 동작 |
 | --- | --- | --- |
-| 홈 | ⌂ | 9개 지표 카드(GDP는 분기 배지로 표시) + **Run** 시 최근 7일치 표. 데이터는 Actions가 매일 자동 갱신, Run은 최신 캐시를 재조회 |
+| 홈 | ⌂ | 가로 슬라이드로 키워드 선택 → `content/keywords/*.md` 렌더 (마크다운 글을 쓰면 그대로 올라감) |
 | 산업분석 | ⌕ | 가로 슬라이드로 산업 선택 → `content/industries/*.md` 렌더 |
 | 백테스팅 | ▤ | Find Alpha(팩터별 백테스트 결과 요약) 클릭 → 하단에 해당 팩터의 결과 글 렌더 · 파란도형(새 백테스팅) → Streamlit |
 | 목표주가 | ◈ | 가로 슬라이드로 계산법 선택 → Streamlit 계산기 |
@@ -57,18 +57,15 @@ dailyqaunt/
 
 **2. Streamlit 배포** — [share.streamlit.io](https://share.streamlit.io) 에서 이 repo 연결, Main file path `streamlit_app/Home.py`. 배포 URL을 `docs/data/config.json` 의 `targetMethods[].url`·`backtest.newBacktestUrl` 에 입력.
 
-**3. 데이터 자동화** — Actions 탭에서 `Update market data` 워크플로우 활성화. 즉시 실행하려면 `Run workflow` 클릭.
-GDP 카드를 채우려면 저장소 Settings → Secrets and variables → Actions 에 `FRED_API_KEY`를 등록하세요 ([무료 발급](https://fred.stlouisfed.org/docs/api/api_key.html)). 키가 없으면 GDP 카드 없이 나머지 8개 지표만 갱신됩니다.
+**3. 글 추가** — `docs/content/keywords/`(홈) · `industries/`(산업분석) · `backtests/`(백테스트 결과)에 `.md` 작성 → `config.json` 의 해당 목록(`homeKeywords`/`industries`/`backtest.factors`)에 항목 추가 → 커밋.
 
-**4. 글 추가** — `docs/content/industries/`(산업분석) 또는 `docs/content/backtests/`(팩터별 백테스트 결과)에 `.md` 작성 → `config.json` 에 항목 추가 → 커밋.
+> 매크로 지표 파이프라인(`pipeline/`, `.github/workflows/update-data.yml`, `FRED_API_KEY`)은 홈탭 개편으로 **현재 미사용** 상태입니다. 지표 기능을 되살리지 않을 거라면 이 파일들을 삭제해도 됩니다.
 
 ## 🧪 로컬 테스트
 
 ```bash
-pip install -r requirements.txt         # pipeline + streamlit_app 의존성 한 번에 설치
-cp .env.example .env && $EDITOR .env    # FRED_API_KEY 입력 (선택)
-python pipeline/fetch_macro.py          # macro.json 갱신
 python -m http.server -d docs 8000      # http://localhost:8000 에서 프론트 확인
+pip install -r streamlit_app/requirements.txt
 streamlit run streamlit_app/Home.py     # 계산 앱 확인
 ```
 

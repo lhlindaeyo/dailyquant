@@ -46,14 +46,10 @@
         <div class="topbar-meta" id="topbar-meta">Personal Quant Research</div>
       </header>
 
-      <!-- 홈 -->
+      <!-- 홈: 키워드 가로선택 + 마크다운 글 -->
       <section id="tab-home" class="tab active">
-        <div id="home-grid" class="grid-9"><!-- 9개 지표 카드 (home.js) --></div>
-        <div class="toolbar">
-          <button id="home-run" class="btn-primary">Run · 최근 7일</button>
-          <span id="home-updated" class="muted"></span>
-        </div>
-        <div id="home-detail" class="panel scroll-y"><!-- 7일치 표 --></div>
+        <div id="home-chips" class="row-scroll"><!-- 키워드 가로선택 (home.js) --></div>
+        <div id="home-body" class="panel scroll-y markdown"><!-- 선택 키워드 md 렌더 --></div>
       </section>
 
       <!-- 산업분석 -->

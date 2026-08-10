@@ -1,70 +1,41 @@
-// 홈: macro.json(9개 지표 × 7일)을 읽어 카드 + 7일치 표 렌더
-const MACRO_URL = "./data/macro.json";
+// 홈: config.homeKeywords의 가로칩 → 클릭 시 해당 .md fetch → marked 렌더
+document.addEventListener("config:ready", () => {
+  const cfg = window.APP.config || {};
+  const chips = document.getElementById("home-chips");
+  const body = document.getElementById("home-body");
+  const keywords = cfg.homeKeywords || [];
 
-async function loadMacro() {
-  const grid = document.getElementById("home-grid");
-  const detail = document.getElementById("home-detail");
-  const updated = document.getElementById("home-updated");
-  grid.innerHTML = "<p class='muted'>불러오는 중…</p>";
+  if (!keywords.length) {
+    chips.innerHTML = "<p class='muted'>config.json에 homeKeywords를 추가하세요.</p>";
+    body.innerHTML = "";
+    return;
+  }
 
-  try {
-    // 캐시 방지용 쿼리스트링 → "run" 시 최신 JSON을 강제로 다시 받음
-    const res = await fetch(MACRO_URL + "?t=" + Date.now());
-    const data = await res.json();
-    updated.textContent = "기준일: " + (data.generated || "-");
-
-    // 카드 (마지막 값 + 전일 대비, 분기 지표는 발표 시점 배지로 대체)
-    grid.innerHTML = "";
-    data.series.forEach((s) => {
-      const v = s.values;
-      const last = v[v.length - 1];
-      const card = document.createElement("div");
-      card.className = "metric-card";
-
-      if (s.freq === "quarterly") {
-        card.innerHTML = `
-          <div class="name">${s.name}</div>
-          <div class="value">${fmt(last, s.unit)}</div>
-          <div class="chg quarterly">${s.asOf || "분기"} 발표치 · 매일 갱신 아님</div>`;
-      } else {
-        const prev = v[v.length - 2] ?? last;
-        const chg = last - prev;
-        const pct = prev ? ((chg / prev) * 100).toFixed(2) : "0.00";
-        const dir = chg >= 0 ? "up" : "down";
-        card.innerHTML = `
-          <div class="name">${s.name}</div>
-          <div class="value">${fmt(last, s.unit)}</div>
-          <div class="chg ${dir}">${chg >= 0 ? "▲" : "▼"} ${Math.abs(chg).toFixed(2)} (${pct}%)</div>`;
-      }
-      grid.appendChild(card);
+  chips.innerHTML = "";
+  keywords.forEach((kw, i) => {
+    const chip = document.createElement("div");
+    chip.className = "chip" + (i === 0 ? " active" : "");
+    chip.innerHTML = `<div class="chip-title">${kw.name}</div>
+                      <div class="chip-sub">${kw.sub || ""}</div>`;
+    chip.addEventListener("click", () => {
+      chips.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      renderKeyword(kw, body);
     });
+    chips.appendChild(chip);
+  });
 
-    // 7일치 표
-    renderTable(detail, data);
+  renderKeyword(keywords[0], body); // 첫 키워드 기본 표시
+});
+
+async function renderKeyword(kw, el) {
+  el.innerHTML = "<p class='muted'>불러오는 중…</p>";
+  try {
+    const res = await fetch("./content/keywords/" + kw.file);
+    if (!res.ok) throw new Error("not found");
+    const md = await res.text();
+    el.innerHTML = marked.parse(md);
   } catch (e) {
-    grid.innerHTML = "<p class='muted'>데이터가 아직 없어요. GitHub Actions가 macro.json을 생성하면 표시됩니다.</p>";
-    console.error(e);
+    el.innerHTML = `<p class='muted'>글이 아직 없어요. <code>docs/content/keywords/${kw.file}</code> 파일을 작성해 커밋하세요.</p>`;
   }
 }
-
-function fmt(n, unit) {
-  const s = Number(n).toLocaleString("ko-KR");
-  return unit ? `${s} ${unit}` : s;
-}
-
-function renderTable(el, data) {
-  const days = data.dates || [];
-  let html = "<table><thead><tr><th>지표</th>";
-  days.forEach((d) => (html += `<th>${d.slice(5)}</th>`));
-  html += "</tr></thead><tbody>";
-  data.series.forEach((s) => {
-    html += `<tr><td>${s.name}</td>`;
-    s.values.forEach((v) => (html += `<td>${Number(v).toLocaleString("ko-KR")}</td>`));
-    html += "</tr>";
-  });
-  html += "</tbody></table>";
-  el.innerHTML = html;
-}
-
-document.getElementById("home-run").addEventListener("click", loadMacro);
-document.addEventListener("DOMContentLoaded", loadMacro);
