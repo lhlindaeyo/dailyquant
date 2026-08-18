@@ -128,7 +128,7 @@ body {
 .app.collapsed .sidebar-foot { justify-content: center; padding: 10px 0 2px; }
 
 /* ── 콘텐츠 ──────────────────────────────── */
-.content { flex: 1 1 auto; min-width: 0; padding: 0 0 56px; }
+.content { flex: 1 1 auto; min-width: 0; padding: 0 0 24px; }
 
 .topbar {
   display: flex; align-items: baseline; gap: 16px;
@@ -215,6 +215,25 @@ body {
 .scroll-y { max-height: 400px; overflow-y: auto; }
 .scroll-y::-webkit-scrollbar { width: 9px; }
 .scroll-y::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 5px; border: 2px solid var(--panel); }
+
+/* ── 홈: 일기 피드 (시황/매크로/주주일지) ───── */
+.feed { display: flex; flex-direction: column; gap: 14px; }
+.post-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  box-shadow: var(--shadow);
+}
+.post-date {
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  letter-spacing: .02em;
+  margin-bottom: 12px; padding-bottom: 9px;
+  border-bottom: 1px solid var(--line);
+}
+.post-card .markdown h2:first-child { margin-top: 0; }
+.post-card .markdown > *:last-child { margin-bottom: 0; }
 
 /* ── 가로 슬라이드 칩 (산업/계산법) ─────────── */
 .row-scroll {

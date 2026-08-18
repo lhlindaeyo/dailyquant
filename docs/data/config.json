@@ -1,8 +1,14 @@
 {
+  "github": {
+    "owner": "lhlindaeyo",
+    "name": "stocklog",
+    "branch": "main",
+    "contentBase": "docs/content/home"
+  },
   "homeKeywords": [
-    { "name": "오늘의 시황", "sub": "Daily Note", "file": "daily-note.md" },
-    { "name": "매크로", "sub": "Macro", "file": "macro.md" },
-    { "name": "주주일지", "sub": "Shareholder Log", "file": "shareholder-log.md" }
+    { "name": "오늘의 시황", "sub": "Daily Note", "dir": "daily" },
+    { "name": "매크로", "sub": "Macro", "dir": "macro" },
+    { "name": "주주일지", "sub": "Shareholder Log", "dir": "log" }
   ],
   "industries": [
     { "name": "반도체", "sub": "Semiconductor", "file": "semiconductor.md" },
