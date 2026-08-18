@@ -9,9 +9,9 @@ GitHub Pages 프론트에서 연결됩니다.
 """
 import streamlit as st
 
-st.set_page_config(page_title="Daily Quant · Tools", page_icon="$", layout="wide")
+st.set_page_config(page_title="Daily Stock · Tools", page_icon="$", layout="wide")
 
-st.title("Daily Quant · 계산 도구")
+st.title("Daily Stock · 계산 도구")
 st.write(
     "왼쪽 사이드바에서 페이지를 선택하세요. "
     "이 앱은 GitHub Pages 프론트엔드에서 링크로 연결됩니다."

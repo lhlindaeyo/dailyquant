@@ -1,4 +1,4 @@
-# 📊 Daily Quant
+# 📊 Daily Stock
 
 개인 퀀트 리서치 플랫폼. **정적 프론트(GitHub Pages) + 계산 앱(Streamlit)** 2층 구조로 동작합니다.
 

@@ -2,7 +2,7 @@
   "homeKeywords": [
     { "name": "오늘의 시황", "sub": "Daily Note", "file": "daily-note.md" },
     { "name": "매크로", "sub": "Macro", "file": "macro.md" },
-    { "name": "관심 테마", "sub": "Themes", "file": "themes.md" }
+    { "name": "주주일지", "sub": "Shareholder Log", "file": "shareholder-log.md" }
   ],
   "industries": [
     { "name": "반도체", "sub": "Semiconductor", "file": "semiconductor.md" },
